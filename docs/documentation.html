@@ -1,0 +1,712 @@
+<!--
+  GrowthPulse — Project documentation.
+  Open this file directly in a browser (no server required).
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GrowthPulse — Project Documentation</title>
+    <style>
+      :root {
+        --bg: #fafaf9;
+        --panel: #ffffff;
+        --ink: #18181b;
+        --muted: #71717a;
+        --line: #e4e4e7;
+        --accent: #00a884;
+        --accent-soft: #d6f5ec;
+        --warn: #b45309;
+        --warn-soft: #fef3c7;
+        --code-bg: #f4f4f5;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+          Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 32px 96px;
+      }
+      header.page {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 24px;
+        margin-bottom: 32px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: -0.01em;
+      }
+      h2 {
+        margin: 48px 0 12px;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+        scroll-margin-top: 24px;
+      }
+      h3 {
+        margin: 24px 0 8px;
+        font-size: 16px;
+      }
+      h4 {
+        margin: 18px 0 6px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      p { margin: 8px 0; }
+      ul, ol { margin: 8px 0; padding-left: 22px; }
+      li { margin: 4px 0; }
+      .lede { color: var(--muted); max-width: 70ch; }
+      code, .mono {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+          Consolas, monospace;
+        font-size: 0.92em;
+        background: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12.5px;
+        line-height: 1.5;
+        margin: 12px 0;
+      }
+      pre code {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        font-size: inherit;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .pill.client { background: var(--accent-soft); color: #006a52; }
+      .pill.server { background: var(--warn-soft); color: var(--warn); }
+      .pill.muted  { background: var(--code-bg); color: var(--muted); }
+
+      /* Panel */
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 22px;
+        margin: 14px 0;
+      }
+      .panel h3:first-child { margin-top: 0; }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 13.5px;
+        margin: 12px 0;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        background: #fafafa;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      tr:last-child td { border-bottom: 0; }
+
+      /* TOC */
+      nav.toc {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin: 24px 0 32px;
+      }
+      nav.toc ol {
+        margin: 0;
+        padding-left: 22px;
+        font-size: 14px;
+      }
+      nav.toc li { margin: 4px 0; }
+      nav.toc a { color: var(--ink); text-decoration: none; }
+      nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+      /* Callout */
+      .callout {
+        border-left: 3px solid var(--accent);
+        background: var(--accent-soft);
+        color: #064e3b;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin: 14px 0;
+        font-size: 14px;
+      }
+      .callout.warn {
+        border-left-color: var(--warn);
+        background: var(--warn-soft);
+        color: #78350f;
+      }
+
+      /* Trade-off card */
+      .tradeoff {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin: 12px 0;
+      }
+      .tradeoff h3 {
+        margin: 0 0 6px;
+        font-size: 15px;
+      }
+      .tradeoff .row {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 10px;
+        margin: 8px 0;
+        font-size: 13.5px;
+      }
+      .tradeoff .row .label {
+        color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        padding-top: 2px;
+      }
+
+      .meta { color: var(--muted); font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page">
+        <h1>GrowthPulse — Project Documentation</h1>
+        <p class="lede">
+          Engineering reference for the GrowthPulse AI landing page: API surface, frontend,
+          architecture, local setup, A/B test configuration in PostHog, test accounts, AI tools
+          used during development, and the trade-offs taken.
+        </p>
+        <p class="meta">Stack: Next.js 16 (App Router) · TypeScript · Tailwind v4 · shadcn/ui · Supabase · PostHog · Vitest.</p>
+      </header>
+
+      <nav class="toc" aria-label="Table of contents">
+        <ol>
+          <li><a href="#api">API</a></li>
+          <li><a href="#front">Frontend</a></li>
+          <li><a href="#arch">Architecture</a></li>
+          <li><a href="#setup">Project setup</a></li>
+          <li><a href="#ab">Configuring an A/B test in PostHog</a></li>
+          <li><a href="#users">Test accounts (Supabase, PostHog)</a></li>
+          <li><a href="#ai">AI tools used</a></li>
+          <li><a href="#tradeoffs">Trade-offs</a></li>
+        </ol>
+      </nav>
+
+      <!-- 1. API ------------------------------------------------------------ -->
+      <h2 id="api">1. API</h2>
+      <p class="lede">
+        The app has no public REST API. All write paths run through a single
+        <strong>Next.js Server Action</strong>, and analytics is fired server-side from the same
+        action. This keeps the service role key and the PostHog API key off the client.
+      </p>
+
+      <div class="panel">
+        <h3><code>submitLead(formData)</code> <span class="pill server">Server Action</span></h3>
+        <p>
+          Defined in <code>src/lib/actions.ts</code>. Invoked by the lead-capture form via
+          <code>&lt;form action={submitLead}&gt;</code>. On success it issues a
+          <code>redirect('/thank-you')</code>; on validation failure it returns
+          <code>{ error: string }</code> for the client to render.
+        </p>
+
+        <h4>Input (FormData)</h4>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>name</code></td><td>string</td><td>yes</td><td>Trimmed, 1–100 chars.</td></tr>
+            <tr><td><code>email</code></td><td>string</td><td>yes</td><td>Validated via Zod <code>z.string().email()</code>.</td></tr>
+            <tr><td><code>company_size</code></td><td>enum</td><td>yes</td><td><code>"1-10" | "11-50" | "51-200" | "201-1000" | "1000+"</code></td></tr>
+            <tr><td><code>marketing_team_size</code></td><td>enum</td><td>yes</td><td><code>"solo" | "2-5" | "6-15" | "16+"</code></td></tr>
+            <tr><td><code>ab_variant</code></td><td>string</td><td>yes</td><td>Hidden input, set from the SSR-resolved variant.</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Server-only side effects</h4>
+        <ol>
+          <li>Reads <code>visitor_id</code> and <code>utm_data</code> cookies.</li>
+          <li>Validates body with <code>leadSchema</code> (Zod).</li>
+          <li>Calls <code>LeadService.createLead()</code> → persists into the Supabase <code>leads</code> table.</li>
+          <li>Calls <code>AnalyticsService.trackLeadCaptured()</code> → fires <code>lead_captured</code> on PostHog (server-side) with the captured UTM + variant.</li>
+          <li>Redirects to <code>/thank-you</code>.</li>
+        </ol>
+
+        <h4>Responses</h4>
+        <table>
+          <thead><tr><th>Case</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr><td>Valid input</td><td><code>redirect('/thank-you')</code> (HTTP 303 by Next).</td></tr>
+            <tr><td>Invalid input</td><td>Returns <code>{ error: "&lt;field&gt;: &lt;message&gt;" }</code>.</td></tr>
+            <tr><td>Analytics failure</td><td>Logged, swallowed — lead is still persisted and redirect proceeds.</td></tr>
+            <tr><td>DB failure</td><td>Throws — Next renders the error boundary.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        For the full conversion event catalogue (client and server PostHog events), see
+        <code>docs/tracking-plan.html</code>.
+      </div>
+
+      <!-- 2. Front ----------------------------------------------------------- -->
+      <h2 id="front">2. Frontend</h2>
+      <p class="lede">
+        Server-rendered landing page composed of section components. Tailwind v4 with shadcn/ui
+        primitives. PostHog runs in the browser for funnel/section/CTA events; lead persistence
+        and the <code>lead_captured</code> event run server-side.
+      </p>
+
+      <h3>Pages</h3>
+      <table>
+        <thead><tr><th>Route</th><th>File</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>/</code></td>
+            <td><code>app/page.tsx</code></td>
+            <td>SSR landing page. Resolves the A/B variant via <code>getHeroVariant(visitorId)</code> and passes it to <code>Hero</code> and the form's hidden input.</td>
+          </tr>
+          <tr>
+            <td><code>/thank-you</code></td>
+            <td><code>app/thank-you/page.tsx</code></td>
+            <td>Conversion confirmation. Fires <code>thank_you_viewed</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Sections</h3>
+      <p>Each section is an isolated component in <code>src/components/sections/</code>:</p>
+      <ul>
+        <li><code>Hero</code> — Headline (A/B), subhead, primary + secondary CTA.</li>
+        <li><code>Features</code> — Six product capabilities.</li>
+        <li><code>SocialProof</code> — Testimonials and brand logos.</li>
+        <li><code>Pricing</code> — Three tiers (Starter / Growth / Scale).</li>
+        <li><code>CTA</code> — Final form, posts to the <code>submitLead</code> Server Action.</li>
+      </ul>
+
+      <h3>Cross-cutting client components</h3>
+      <ul>
+        <li><code>PostHogProvider</code> — Initializes the browser SDK. Registers super-properties (<code>ab_variant</code>, UTM keys).</li>
+        <li><code>UTMCapture</code> — Reads <code>?utm_*</code> on first load and writes them to the <code>utm_data</code> cookie.</li>
+        <li><code>AnalyticsBootstrap</code> — Fires <code>experiment_exposed</code> once per pageview.</li>
+      </ul>
+
+      <h3>Design tokens</h3>
+      <p>
+        Tailwind v4 with the shadcn oklch token set defined in <code>app/globals.css</code>.
+        Use shadcn primitives from <code>components/ui/</code> (<code>button</code>, <code>input</code>,
+        <code>select</code>, <code>card</code>, <code>badge</code>) instead of bare HTML.
+        Brand tone is "confident, data-driven, slightly provocative" — no stock photography of
+        people; rely on gradients and data viz only.
+      </p>
+
+      <!-- 3. Architecture --------------------------------------------------- -->
+      <h2 id="arch">3. Architecture</h2>
+      <p class="lede">
+        Feature-based clean architecture. The presentation layer never touches Supabase or
+        PostHog directly — it goes through a Service, which goes through a Repository.
+      </p>
+
+      <h3>Folder layout</h3>
+<pre><code>app/                                Next.js App Router (NOT src/app)
+  layout.tsx                        Metadata, PostHogProvider, UTMCapture
+  page.tsx                          SSR landing page
+  thank-you/page.tsx
+middleware.ts                       Sets the visitor_id cookie
+src/
+  features/
+    leads/
+      domain/
+        models.ts                   Lead, UTMData, Zod schema, enums
+        repositories.ts             ILeadRepository interface
+      data/
+        lead-repository.ts          Supabase impl of ILeadRepository
+        lead-service.ts             LeadService — orchestrates lead creation
+    analytics/
+      data/
+        analytics-service.ts        Server-side PostHog event reporting
+  lib/
+    supabase.ts                     Server-only Supabase singleton
+    posthog.ts                      PostHog Node client
+    ab.ts                           getHeroVariant + heroHeadlines
+    actions.ts                      submitLead Server Action
+  components/
+    PostHogProvider.tsx             Browser SDK wrapper
+    UTMCapture.tsx                  Reads ?utm_* → cookie
+    sections/                       Hero, Features, SocialProof, Pricing, CTA
+components/ui/                      shadcn primitives</code></pre>
+
+      <h3>Layer rules</h3>
+      <table>
+        <thead><tr><th>Layer</th><th>May depend on</th><th>Forbidden</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Domain (<code>features/*/domain</code>)</td>
+            <td>Standard library, <code>zod</code></td>
+            <td>Framework imports, infrastructure clients.</td>
+          </tr>
+          <tr>
+            <td>Data (<code>features/*/data</code>)</td>
+            <td>Domain, <code>src/lib/*</code> infra singletons</td>
+            <td>React, Next, browser-only globals.</td>
+          </tr>
+          <tr>
+            <td>Presentation (<code>app/</code>, <code>src/components/</code>)</td>
+            <td>Services via Server Actions in <code>src/lib/actions.ts</code></td>
+            <td>Direct Supabase / PostHog imports.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Request flow — lead submission</h3>
+      <ol>
+        <li>User submits the form. Browser POSTs FormData to the Server Action.</li>
+        <li><code>submitLead</code> validates the payload with Zod.</li>
+        <li><code>LeadService.createLead()</code> → <code>LeadRepository.insert()</code> → Supabase.</li>
+        <li><code>AnalyticsService.trackLeadCaptured()</code> → PostHog server SDK.</li>
+        <li><code>redirect('/thank-you')</code>.</li>
+      </ol>
+
+      <h3>Database</h3>
+      <p>Single table, RLS disabled, write access via the service role key.</p>
+<pre><code>create table leads (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  company_size text not null,
+  marketing_team_size text not null,
+  utm jsonb default '{}'::jsonb,
+  ab_variant text,
+  created_at timestamptz default now()
+);</code></pre>
+
+      <h3>Path aliases</h3>
+      <table>
+        <thead><tr><th>Alias</th><th>Maps to</th></tr></thead>
+        <tbody>
+          <tr><td><code>@/*</code></td><td><code>./*</code> (project root) — shadcn convention</td></tr>
+          <tr><td><code>@features/*</code></td><td><code>./src/features/*</code></td></tr>
+          <tr><td><code>@components/*</code></td><td><code>./src/components/*</code></td></tr>
+          <tr><td><code>@lib/*</code></td><td><code>./src/lib/*</code></td></tr>
+        </tbody>
+      </table>
+
+      <!-- 4. Setup ---------------------------------------------------------- -->
+      <h2 id="setup">4. Project setup</h2>
+
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Node.js 20+ (LTS recommended)</li>
+        <li>npm 10+ (project uses <code>package-lock.json</code>)</li>
+        <li>A Supabase project (free tier is fine)</li>
+        <li>A PostHog Cloud project (free tier is fine)</li>
+      </ul>
+
+      <h3>1. Clone and install</h3>
+<pre><code>git clone &lt;repo-url&gt;
+cd growthpulse
+npm install</code></pre>
+
+      <h3>2. Create the <code>leads</code> table in Supabase</h3>
+      <p>In the Supabase SQL editor, run the SQL from the Architecture section above. Confirm that <strong>RLS is disabled</strong> on the <code>leads</code> table (server-only writes use the service role key).</p>
+
+      <h3>3. Environment variables</h3>
+      <p>Create <code>.env.local</code> at the project root with all five values:</p>
+<pre><code>NEXT_PUBLIC_SUPABASE_URL=https://&lt;project-ref&gt;.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=&lt;service-role-key&gt;       # server-only, never expose
+NEXT_PUBLIC_POSTHOG_KEY=phc_&lt;project-api-key&gt;
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com  # or eu.i.posthog.com
+POSTHOG_API_KEY=phx_&lt;personal-api-key&gt;             # server-only</code></pre>
+      <div class="callout warn">
+        Never ship the <code>SUPABASE_SERVICE_ROLE_KEY</code> or <code>POSTHOG_API_KEY</code> to the browser.
+        Anything prefixed <code>NEXT_PUBLIC_</code> is inlined into the client bundle — keep server-only keys un-prefixed.
+      </div>
+
+      <h3>4. Run</h3>
+<pre><code>npm run dev      # starts the dev server at http://localhost:3000
+npm test         # runs the Vitest suite
+npm run build    # production build
+npm run start    # serves the production build locally</code></pre>
+
+      <h3>5. Deploy to Vercel</h3>
+      <ol>
+        <li>Import the repository into Vercel.</li>
+        <li>In <em>Project Settings → Environment Variables</em>, add the same five vars for the <code>Production</code> and <code>Preview</code> scopes.</li>
+        <li>Trigger a deploy (push to <code>main</code> or use the <code>vercel:deploy</code> skill / <code>vercel --prod</code>).</li>
+      </ol>
+
+      <!-- 5. A/B in PostHog ------------------------------------------------- -->
+      <h2 id="ab">5. Configuring an A/B test in PostHog</h2>
+      <p class="lede">
+        The hero headline test is resolved server-side at request time and persisted on the lead
+        row at submission. Setting up a new experiment requires both a PostHog flag and a code
+        wiring in <code>src/lib/ab.ts</code>.
+      </p>
+
+      <h3>Existing experiment</h3>
+      <table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Flag key</td><td><code>hero-headline</code></td></tr>
+          <tr><td>Type</td><td>Multivariate</td></tr>
+          <tr><td>Variants</td><td><code>control</code> (50%), <code>variant-b</code> (50%)</td></tr>
+          <tr>
+            <td>Copy</td>
+            <td>
+              <strong>control:</strong> "Your marketing stack, diagnosed in minutes."<br/>
+              <strong>variant-b:</strong> "Find out exactly where your marketing is bleeding money."
+            </td>
+          </tr>
+          <tr><td>Distinct ID</td><td><code>visitor_id</code> cookie (set by <code>middleware.ts</code>)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Step-by-step: setting up the flag in PostHog</h3>
+      <ol>
+        <li>In the PostHog dashboard, go to <em>Feature flags → New feature flag</em>.</li>
+        <li>
+          Fill in the key field — for this project it is <code>hero-headline</code>. The key must
+          match the string passed to <code>getHeroVariant()</code> in <code>src/lib/ab.ts</code>.
+        </li>
+        <li>Set <em>Served value</em> to <strong>Multiple variants with rollout percentages (Multivariate)</strong>.</li>
+        <li>
+          Add two variants:
+          <ul>
+            <li><code>control</code> — rollout 50%</li>
+            <li><code>variant-b</code> — rollout 50%</li>
+          </ul>
+        </li>
+        <li>Under <em>Release conditions</em>, leave the default ("100% of all users"). Save.</li>
+        <li>
+          Go to <em>Experiments → New experiment</em>, link it to the flag, pick a primary metric
+          (e.g. <code>lead_captured</code>), and set the secondary metric to <code>cta_clicked</code>.
+        </li>
+        <li>Click <strong>Launch</strong> when you're ready to start collecting exposures.</li>
+      </ol>
+
+      <h3>Step-by-step: wiring a new variant in code</h3>
+      <ol>
+        <li>
+          Open <code>src/lib/ab.ts</code> and add the variant copy to <code>heroHeadlines</code>:
+<pre><code>export const heroHeadlines = {
+  control: 'Your marketing stack, diagnosed in minutes.',
+  'variant-b': 'Find out exactly where your marketing is bleeding money.',
+  // 'variant-c': '&lt;new copy&gt;',
+}</code></pre>
+        </li>
+        <li>
+          <code>getHeroVariant(visitorId)</code> calls <code>posthog.getFeatureFlag('hero-headline', visitorId)</code>
+          on the server. It returns <code>'control'</code> when the flag is undefined, so the page
+          stays renderable even if PostHog is down.
+        </li>
+        <li>
+          The variant is passed as a prop into <code>&lt;Hero&gt;</code> and into the hidden
+          <code>ab_variant</code> input on the form. <code>submitLead</code> persists it on the
+          <code>leads.ab_variant</code> column.
+        </li>
+        <li>
+          On the client, <code>AnalyticsBootstrap</code> fires <code>experiment_exposed</code>
+          with <code>{ flag_key: 'hero-headline', variant }</code> exactly once per pageview so
+          PostHog can compute exposure-adjusted conversion.
+        </li>
+      </ol>
+
+      <div class="callout">
+        Server-side resolution means the variant is already in the HTML — no flicker, no client
+        re-render, and it's pinned to the same <code>visitor_id</code> that PostHog will use to
+        attribute the conversion.
+      </div>
+
+      <!-- 6. Test users ----------------------------------------------------- -->
+      <h2 id="users">6. Test accounts (Supabase, PostHog)</h2>
+      <p class="lede">
+        Real credentials are <strong>not</strong> committed to the repository. Share the values
+        below with reviewers out-of-band (1Password, encrypted note, or the brief response email).
+      </p>
+
+      <h3>Supabase (read-only reviewer)</h3>
+      <table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Project URL</td><td><code>https://&lt;project-ref&gt;.supabase.co</code></td></tr>
+          <tr><td>Dashboard login</td><td><code>reviewer+aga@growthpulse.test</code></td></tr>
+          <tr><td>Password</td><td>shared out-of-band</td></tr>
+          <tr><td>Role</td><td>Read-only on the <code>leads</code> table</td></tr>
+          <tr><td>What you can do</td><td>Browse rows in the Table editor and run SELECT queries in the SQL editor.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>PostHog (member with read access)</h3>
+      <table>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Region / URL</td><td><code>https://us.posthog.com</code></td></tr>
+          <tr><td>Project</td><td>GrowthPulse — Landing</td></tr>
+          <tr><td>Login</td><td><code>reviewer+aga@growthpulse.test</code></td></tr>
+          <tr><td>Password</td><td>shared out-of-band</td></tr>
+          <tr><td>Role</td><td>Member (read events, dashboards, experiments)</td></tr>
+          <tr><td>What you can do</td><td>Inspect the live funnel, the <code>hero-headline</code> experiment results, and replays of test sessions.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout warn">
+        Before sharing the deliverable, replace the placeholders above with the real reviewer
+        credentials and double-check that the Supabase user has read-only access on the
+        <code>leads</code> table and no admin role on the project.
+      </div>
+
+      <!-- 7. AI tools ------------------------------------------------------- -->
+      <h2 id="ai">7. AI tools used</h2>
+      <p class="lede">
+        The project was built with AI assistance for design, planning, implementation, and asset
+        generation. The list below covers every model and tool that meaningfully contributed.
+      </p>
+
+      <div class="panel">
+        <h3>Claude Code <span class="pill muted">design · planning · implementation</span></h3>
+        <ul>
+          <li>
+            <strong>Design.</strong> Drafted the visual direction, picked the Tailwind v4 token set,
+            and produced the structured design spec at
+            <code>docs/superpowers/specs/2026-05-28-growthpulse-landing-page-design.md</code>.
+          </li>
+          <li>
+            <strong>Planning.</strong> Wrote the implementation plan at
+            <code>~/.claude/plans/pure-beaming-hopcroft.md</code> — feature decomposition, task
+            ordering, and acceptance criteria.
+          </li>
+          <li>
+            <strong>Implementation.</strong> Generated and refactored every file under
+            <code>app/</code>, <code>src/</code>, <code>components/</code>, and the test suite,
+            following the feature-based clean architecture described above.
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>ChatGPT <span class="pill muted">illustration generation</span></h3>
+        <ul>
+          <li>
+            Generated all of the abstract illustrations and gradient/data-viz assets used across
+            the landing page. The brand rule of "no stock photography of people" was kept by
+            prompting only for abstract, data-driven visuals.
+          </li>
+          <li>
+            Output was downscaled and converted to web formats before being placed under
+            <code>public/</code>.
+          </li>
+        </ul>
+      </div>
+
+      <!-- 8. Trade-offs ----------------------------------------------------- -->
+      <h2 id="tradeoffs">8. Trade-offs</h2>
+      <p class="lede">
+        Explicit list of decisions that bought speed, simplicity, or safety at a cost. Each entry
+        names what was given up and when we would revisit it.
+      </p>
+
+      <div class="tradeoff">
+        <h3>Server Action over a public REST endpoint</h3>
+        <div class="row"><div class="label">Chose</div><div>Single <code>submitLead</code> Server Action handling validation, persistence, and analytics.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>A reusable API surface that mobile clients or external integrations could call.</div></div>
+        <div class="row"><div class="label">Why</div><div>Single-page landing — no other consumer exists. Server Actions remove a network hop, keep types end-to-end, and let us keep the service role key off the client.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>A second consumer needs to create leads (mobile, partner integration, marketing automation tool).</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>RLS disabled on <code>leads</code> with service-role-only access</h3>
+        <div class="row"><div class="label">Chose</div><div>No row-level security; the server holds the only key that can insert.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>Defence in depth — a leaked service key gives unrestricted write access.</div></div>
+        <div class="row"><div class="label">Why</div><div>RLS adds friction for a table that is write-only from a single trusted server. The threat model is exactly "leaked service key," which RLS doesn't mitigate either.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>Any read path is added that needs anonymous access (e.g. a public "leads counter"), or the table starts holding cross-tenant data.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>SSR variant resolution instead of client flags</h3>
+        <div class="row"><div class="label">Chose</div><div>Resolve <code>hero-headline</code> in <code>app/page.tsx</code> via <code>getHeroVariant(visitorId)</code>.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>One server-side PostHog round-trip per cold render — slightly higher TTFB.</div></div>
+        <div class="row"><div class="label">Why</div><div>No client flicker, no layout shift, and the variant is pinned to the same <code>visitor_id</code> the conversion will be attributed to.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>PostHog server latency becomes a meaningful share of TTFB, or we add many flags to the critical path.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>Swallow analytics failures, never block the redirect</h3>
+        <div class="row"><div class="label">Chose</div><div><code>try/catch</code> around <code>trackLeadCaptured</code>, log and continue.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>Strict conversion accuracy — a PostHog outage drops the server-side <code>lead_captured</code> event.</div></div>
+        <div class="row"><div class="label">Why</div><div>The lead row is the source of truth for revenue impact. Analytics is observability, not a system of record. Blocking on PostHog would punish the user for our vendor's outage.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>We move to a durable event queue (e.g. Vercel Queues) where we can persist and retry without blocking.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>No backend pagination / admin UI</h3>
+        <div class="row"><div class="label">Chose</div><div>Reviewers inspect leads in the Supabase Table editor.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>A polished internal dashboard.</div></div>
+        <div class="row"><div class="label">Why</div><div>Out of scope for a take-home assessment. Supabase already provides a usable read interface.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>The sales team starts asking for filters, exports, or notifications.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>Feature-based clean architecture for a single feature</h3>
+        <div class="row"><div class="label">Chose</div><div>Full <code>domain / data</code> split with a repository interface for one entity.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>A few extra files vs. inlining Supabase calls in the Server Action.</div></div>
+        <div class="row"><div class="label">Why</div><div>The brief explicitly evaluates architectural decisions, and the boundary cost is paid once — but it makes the second feature (e.g. a follow-up email flow, a calendar booking) cheap.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>Never — but if the project stays a single page forever, the structure is over-engineered for what it does.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>Cookie-based <code>visitor_id</code> over PostHog's anonymous ID</h3>
+        <div class="row"><div class="label">Chose</div><div>Middleware sets a <code>visitor_id</code> cookie used by both the server (flag resolution, analytics) and the browser SDK.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>One extra cookie; manual identity reconciliation if PostHog ever changes its ID strategy.</div></div>
+        <div class="row"><div class="label">Why</div><div>Server and client must hash to the same bucket for the A/B test to be honest. Owning the ID is simpler than threading PostHog's distinct ID through SSR.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>We adopt a real auth system that already gives us a stable user ID.</div></div>
+      </div>
+
+      <div class="tradeoff">
+        <h3>No end-to-end browser test, Vitest unit tests only</h3>
+        <div class="row"><div class="label">Chose</div><div>Vitest around <code>submitLead</code> and the Zod schema; manual QA in the browser.</div></div>
+        <div class="row"><div class="label">Gave up</div><div>Regression coverage on the form interaction, the redirect, and the thank-you page.</div></div>
+        <div class="row"><div class="label">Why</div><div>Take-home scope, single happy path, no real risk of cross-page state. The validation logic is where bugs would actually land, so that's where the tests are.</div></div>
+        <div class="row"><div class="label">Revisit when</div><div>A second form is added, or the flow grows multi-step.</div></div>
+      </div>
+    </div>
+  </body>
+</html>
