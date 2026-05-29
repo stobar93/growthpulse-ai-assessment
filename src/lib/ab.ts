@@ -1,6 +1,8 @@
 import { posthogServer } from '@lib/posthog'
+import type { HeroVariant } from '@lib/ab-variants'
 
-export type HeroVariant = 'control' | 'variant-b'
+export type { HeroVariant }
+export { heroHeadlines } from '@lib/ab-variants'
 
 const HERO_FLAG = 'hero-headline'
 
@@ -11,9 +13,4 @@ export async function getHeroVariant(visitorId: string): Promise<HeroVariant> {
   } catch {
     return 'control'
   }
-}
-
-export const heroHeadlines: Record<HeroVariant, string> = {
-  'control': 'Your marketing stack, diagnosed in minutes.',
-  'variant-b': 'Find out exactly where your marketing is bleeding money.',
 }

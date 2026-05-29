@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useActionState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -13,10 +13,21 @@ import {
 import posthog from 'posthog-js'
 import { submitLead } from '@lib/actions'
 import { companySizes, marketingTeamSizes } from '@features/leads/domain/models'
-import type { HeroVariant } from '@lib/ab'
+import type { HeroVariant } from '@lib/ab-variants'
+
+type ActionState = { error: string } | null
+
+async function submitLeadAction(
+  _prev: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const result = await submitLead(formData)
+  return result ?? null
+}
 
 export function CTASection({ abVariant }: { abVariant: HeroVariant }) {
   const hasStarted = useRef(false)
+  const [state, formAction] = useActionState(submitLeadAction, null)
 
   function handleFirstInteraction() {
     if (!hasStarted.current) {
@@ -37,8 +48,12 @@ export function CTASection({ abVariant }: { abVariant: HeroVariant }) {
           </p>
         </div>
 
+        {state?.error && (
+          <p className="mb-4 text-sm text-destructive text-center">{state.error}</p>
+        )}
+
         <form
-          action={submitLead}
+          action={formAction}
           onSubmit={() => posthog.capture('cta_clicked', { location: 'final' })}
           className="space-y-4"
         >

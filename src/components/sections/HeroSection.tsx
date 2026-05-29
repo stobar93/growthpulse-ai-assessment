@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import posthog from 'posthog-js'
-import type { HeroVariant } from '@lib/ab'
-import { heroHeadlines } from '@lib/ab'
+import type { HeroVariant } from '@lib/ab-variants'
+import { heroHeadlines } from '@lib/ab-variants'
 
 export function HeroSection({ variant }: { variant: HeroVariant }) {
   function handleCTAClick() {

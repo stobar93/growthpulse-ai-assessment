@@ -19,7 +19,7 @@ export async function submitLead(formData: FormData) {
   const parsed = leadSchema.safeParse(raw)
   if (!parsed.success) {
     const firstError = parsed.error.issues[0]
-    return { error: `${firstError.path[0]}: ${firstError.message}` }
+    return { error: `${String(firstError.path[0])}: ${firstError.message}` }
   }
 
   const cookieStore = await cookies()
