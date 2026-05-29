@@ -1,47 +1,56 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { Card, CardContent } from '@/components/ui/card'
-import { useSectionView } from '@lib/hooks/useSectionView'
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { useSectionView } from "@lib/hooks/useSectionView";
 
 const features = [
   {
-    icon: '⚡',
-    illustration: '/illustrations/integration.webp',
-    title: 'One-Click Stack Integration',
-    description: 'Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.',
+    icon: "⚡",
+    illustration: "/illustrations/integration.webp",
+    title: "One-Click Stack Integration",
+    description:
+      "Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.",
   },
   {
-    icon: '📊',
-    illustration: '/illustrations/score.webp',
-    title: '7-Dimension Growth Score',
-    description: 'Proprietary scoring algorithm rates each growth dimension on a 0–100 scale with benchmarks against industry peers.',
+    icon: "📊",
+    illustration: "/illustrations/score.webp",
+    title: "7-Dimension Growth Score",
+    description:
+      "Proprietary scoring algorithm rates each growth dimension on a 0–100 scale with benchmarks against industry peers.",
   },
   {
-    icon: '🤖',
-    illustration: '/illustrations/action-plan.webp',
-    title: 'AI-Generated Action Plan',
-    description: 'Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.',
+    icon: "🤖",
+    illustration: "/illustrations/action-plan.webp",
+    title: "AI-Generated Action Plan",
+    description:
+      "Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.",
   },
   {
-    icon: '📄',
-    illustration: '/illustrations/report.webp',
-    title: 'Executive Summary Report',
-    description: 'Auto-generates a board-ready PDF with key findings, visualized scores, and strategic recommendations.',
+    icon: "📄",
+    illustration: "/illustrations/report.webp",
+    title: "Executive Summary Report",
+    description:
+      "Auto-generates a board-ready PDF with key findings, visualized scores, and strategic recommendations.",
   },
   {
-    icon: '📡',
-    illustration: '/illustrations/dashboard.webp',
-    title: 'Live Dashboard',
-    description: 'Real-time monitoring of all 7 dimensions with alerts when performance dips below benchmarks.',
+    icon: "📡",
+    illustration: "/illustrations/dashboard.webp",
+    title: "Live Dashboard",
+    description:
+      "Real-time monitoring of all 7 dimensions with alerts when performance dips below benchmarks.",
   },
-]
+];
 
 export function FeaturesSection() {
-  const sectionRef = useSectionView<HTMLElement>('features', 2)
+  const sectionRef = useSectionView<HTMLElement>("features", 2);
 
   return (
-    <section ref={sectionRef} className="py-24 px-6" aria-labelledby="features-heading">
+    <section
+      ref={sectionRef}
+      className="py-24 px-6"
+      aria-labelledby="features-heading"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold">
@@ -54,7 +63,10 @@ export function FeaturesSection() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map(({ icon, illustration, title, description }) => (
-            <Card key={title} className="hover:border-primary/40 transition-colors overflow-hidden">
+            <Card
+              key={title}
+              className="hover:border-primary/40 transition-colors overflow-hidden"
+            >
               <div className="relative aspect-[4/3]">
                 <Image
                   src={illustration}
@@ -65,14 +77,15 @@ export function FeaturesSection() {
                 />
               </div>
               <CardContent className="pt-6">
-                <span className="text-3xl" aria-hidden>{icon}</span>
                 <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">{description}</p>
+                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+                  {description}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
