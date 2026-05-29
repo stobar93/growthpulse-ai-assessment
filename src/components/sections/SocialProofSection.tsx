@@ -1,7 +1,6 @@
 'use client'
 
 import type { ReactNode, SVGProps } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
 import { useSectionView } from '@lib/hooks/useSectionView'
 
 function NovaCRMLogo(props: SVGProps<SVGSVGElement>) {
@@ -81,30 +80,34 @@ function DataBridgeLogo(props: SVGProps<SVGSVGElement>) {
 const testimonials: {
   quote: string
   name: string
-  title: string
+  role: string
   company: string
-  logo: ReactNode
+  stripLogo: ReactNode
+  cardLogo: ReactNode
 }[] = [
   {
     quote: "GrowthPulse found $140K in wasted ad spend we didn't know about.",
     name: 'Sarah Chen',
-    title: 'VP Marketing, NovaCRM (fictional)',
+    role: 'VP Marketing (fictional)',
     company: 'NovaCRM',
-    logo: <NovaCRMLogo className="h-6 w-auto text-foreground/80" aria-hidden="true" />,
+    stripLogo: <NovaCRMLogo className="h-7 w-auto text-foreground/80" aria-hidden="true" />,
+    cardLogo: <NovaCRMLogo className="h-11 w-auto text-foreground" aria-hidden="true" />,
   },
   {
     quote: 'We finally had a single view of our entire funnel. Went from chaos to clarity in a week.',
     name: 'Marcus Rivera',
-    title: 'Head of Growth, Loopify (fictional)',
+    role: 'Head of Growth (fictional)',
     company: 'Loopify',
-    logo: <LoopifyLogo className="h-6 w-auto text-foreground/80" aria-hidden="true" />,
+    stripLogo: <LoopifyLogo className="h-7 w-auto text-foreground/80" aria-hidden="true" />,
+    cardLogo: <LoopifyLogo className="h-11 w-auto text-foreground" aria-hidden="true" />,
   },
   {
     quote: 'The 90-day action plan was better than the $15K consultant report we paid for last year.',
     name: 'Priya Nair',
-    title: 'CMO, DataBridge (fictional)',
+    role: 'CMO (fictional)',
     company: 'DataBridge',
-    logo: <DataBridgeLogo className="h-6 w-auto text-foreground/80" aria-hidden="true" />,
+    stripLogo: <DataBridgeLogo className="h-7 w-auto text-foreground/80" aria-hidden="true" />,
+    cardLogo: <DataBridgeLogo className="h-11 w-auto text-foreground" aria-hidden="true" />,
   },
 ]
 
@@ -123,29 +126,32 @@ export function SocialProofSection() {
         </p>
 
         <div className="flex justify-center items-center gap-12 mb-16 flex-wrap text-muted-foreground/70">
-          {testimonials.map(({ company, logo }) => (
-            <span key={company} className="h-7 flex items-center">
-              {logo}
+          {testimonials.map(({ company, stripLogo }) => (
+            <span key={company} className="h-8 flex items-center">
+              {stripLogo}
             </span>
           ))}
         </div>
 
         <h2 id="social-proof-heading" className="sr-only">Customer testimonials</h2>
 
-        <div className="grid sm:grid-cols-3 gap-6">
-          {testimonials.map(({ quote, name, title, company, logo }) => (
-            <Card key={name}>
-              <CardContent className="pt-6 flex flex-col gap-4 h-full">
+        <div className="grid sm:grid-cols-3 gap-8">
+          {testimonials.map(({ quote, name, role, company, cardLogo }) => (
+            <article
+              key={name}
+              className="flex flex-col items-center text-center gap-6 px-2"
+            >
+              <p className="leading-relaxed flex-1">"{quote}"</p>
+              <footer className="flex flex-col items-center gap-3">
                 <div className="flex items-center" aria-label={company}>
-                  {logo}
+                  {cardLogo}
                 </div>
-                <p className="leading-relaxed flex-1">"{quote}"</p>
-                <footer>
+                <div>
                   <p className="text-primary font-semibold text-sm">{name}</p>
-                  <p className="text-muted-foreground text-xs">{title}</p>
-                </footer>
-              </CardContent>
-            </Card>
+                  <p className="text-muted-foreground text-xs">{role}</p>
+                </div>
+              </footer>
+            </article>
           ))}
         </div>
       </div>
