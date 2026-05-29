@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { HeroSection } from '@components/sections/HeroSection'
+import { HeroBackground } from '@components/sections/HeroBackground'
 import { FeaturesSection } from '@components/sections/FeaturesSection'
 import { SocialProofSection } from '@components/sections/SocialProofSection'
 import { PricingSection } from '@components/sections/PricingSection'
@@ -13,7 +14,9 @@ export default async function HomePage() {
 
   return (
     <main>
-      <HeroSection variant={variant} />
+      <HeroSection variant={variant}>
+        <HeroBackground />
+      </HeroSection>
       <FeaturesSection />
       <SocialProofSection />
       <PricingSection />

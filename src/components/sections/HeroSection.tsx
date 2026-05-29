@@ -6,15 +6,21 @@ import posthog from 'posthog-js'
 import type { HeroVariant } from '@lib/ab-variants'
 import { heroHeadlines } from '@lib/ab-variants'
 
-export function HeroSection({ variant }: { variant: HeroVariant }) {
+export function HeroSection({
+  variant,
+  children,
+}: {
+  variant: HeroVariant
+  children?: React.ReactNode
+}) {
   function handleCTAClick() {
     posthog.capture('cta_clicked', { location: 'hero' })
     document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,212,170,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,212,170,0.03)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
+    <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 overflow-hidden">
+      {children}
 
       <div className="relative max-w-4xl mx-auto">
         <Badge variant="outline" className="border-primary/40 text-primary">
