@@ -55,13 +55,13 @@ export function FeaturesSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map(({ icon, illustration, title, description }) => (
             <Card key={title} className="hover:border-primary/40 transition-colors overflow-hidden">
-              <div className="relative aspect-[4/3] bg-gradient-to-br from-primary/5 via-transparent to-primary/10">
+              <div className="relative aspect-[4/3]">
                 <Image
                   src={illustration}
                   alt=""
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-contain p-4"
+                  className="object-cover"
                 />
               </div>
               <CardContent className="pt-6">
