@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import posthog from 'posthog-js'
+import { useSectionView } from '@lib/hooks/useSectionView'
 
 const tiers = [
   {
@@ -41,11 +43,25 @@ const tiers = [
       'Dedicated success manager',
     ],
   },
-]
+] as const
 
 export function PricingSection() {
+  const sectionRef = useSectionView<HTMLElement>('pricing', 4)
+
+  function handleTierClick(tierName: string) {
+    posthog.capture('cta_clicked', {
+      location: `pricing_${tierName.toLowerCase()}`,
+      cta_label: 'Get started',
+    })
+    document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <section className="py-24 px-6" aria-labelledby="pricing-heading">
+    <section
+      ref={sectionRef}
+      className="py-24 px-6"
+      aria-labelledby="pricing-heading"
+    >
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <h2 id="pricing-heading" className="text-3xl sm:text-4xl font-bold">
@@ -82,7 +98,7 @@ export function PricingSection() {
                 <Button
                   variant={featured ? 'default' : 'outline'}
                   className="w-full"
-                  onClick={() => document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => handleTierClick(name)}
                 >
                   Get started
                 </Button>

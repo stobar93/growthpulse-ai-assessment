@@ -1,4 +1,7 @@
+'use client'
+
 import { Card, CardContent } from '@/components/ui/card'
+import { useSectionView } from '@lib/hooks/useSectionView'
 
 const features = [
   {
@@ -29,8 +32,10 @@ const features = [
 ]
 
 export function FeaturesSection() {
+  const sectionRef = useSectionView<HTMLElement>('features', 2)
+
   return (
-    <section className="py-24 px-6" aria-labelledby="features-heading">
+    <section ref={sectionRef} className="py-24 px-6" aria-labelledby="features-heading">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold">

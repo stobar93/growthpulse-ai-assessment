@@ -1,4 +1,7 @@
+'use client'
+
 import { Card, CardContent } from '@/components/ui/card'
+import { useSectionView } from '@lib/hooks/useSectionView'
 
 const testimonials = [
   {
@@ -21,8 +24,14 @@ const testimonials = [
 const logos = ['NovaCRM', 'Loopify', 'DataBridge']
 
 export function SocialProofSection() {
+  const sectionRef = useSectionView<HTMLElement>('social_proof', 3)
+
   return (
-    <section className="py-24 px-6 bg-card/50" aria-labelledby="social-proof-heading">
+    <section
+      ref={sectionRef}
+      className="py-24 px-6 bg-card/50"
+      aria-labelledby="social-proof-heading"
+    >
       <div className="max-w-6xl mx-auto">
         <p className="text-center text-muted-foreground text-sm uppercase tracking-widest mb-8">
           Trusted by fast-growing B2B SaaS teams

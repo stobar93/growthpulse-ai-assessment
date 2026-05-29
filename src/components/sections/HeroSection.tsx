@@ -5,15 +5,31 @@ import { Badge } from '@/components/ui/badge'
 import posthog from 'posthog-js'
 import type { HeroVariant } from '@lib/ab-variants'
 import { heroHeadlines } from '@lib/ab-variants'
+import { useSectionView } from '@lib/hooks/useSectionView'
 
 export function HeroSection({ variant }: { variant: HeroVariant }) {
-  function handleCTAClick() {
-    posthog.capture('cta_clicked', { location: 'hero' })
+  const sectionRef = useSectionView<HTMLElement>('hero', 1)
+
+  function handlePrimaryCTA() {
+    posthog.capture('cta_clicked', {
+      location: 'hero_primary',
+      cta_label: 'Get Your Free Diagnostic',
+    })
     document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  function handleSecondaryCTA() {
+    posthog.capture('cta_clicked', {
+      location: 'hero_secondary',
+      cta_label: 'See a Sample Report',
+    })
+  }
+
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16">
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16"
+    >
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,212,170,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,212,170,0.03)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto">
@@ -31,10 +47,15 @@ export function HeroSection({ variant }: { variant: HeroVariant }) {
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" onClick={handleCTAClick} className="text-lg px-8 py-6">
+          <Button size="lg" onClick={handlePrimaryCTA} className="text-lg px-8 py-6">
             Get Your Free Diagnostic
           </Button>
-          <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={handleSecondaryCTA}
+            className="text-lg px-8 py-6"
+          >
             See a Sample Report
           </Button>
         </div>
