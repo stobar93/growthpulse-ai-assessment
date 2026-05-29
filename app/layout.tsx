@@ -5,6 +5,7 @@ import { UTMCapture } from '@components/UTMCapture'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://growthpulse.vercel.app'),
   title: 'GrowthPulse AI — Your marketing stack, diagnosed in minutes.',
   description:
     'Connect your marketing tools and get an automated diagnostic report scoring performance across 7 growth dimensions: acquisition, activation, retention, revenue, referral, SEO health, and paid media efficiency.',
