@@ -4,6 +4,7 @@ import { FeaturesSection } from '@components/sections/FeaturesSection'
 import { SocialProofSection } from '@components/sections/SocialProofSection'
 import { PricingSection } from '@components/sections/PricingSection'
 import { CTASection } from '@components/sections/CTASection'
+import { AnalyticsBootstrap } from '@components/analytics/AnalyticsBootstrap'
 import { getHeroVariant } from '@lib/ab'
 
 export default async function HomePage() {
@@ -13,6 +14,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      <AnalyticsBootstrap abVariant={variant} />
       <HeroSection variant={variant} />
       <FeaturesSection />
       <SocialProofSection />

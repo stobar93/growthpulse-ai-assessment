@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { ThankYouTracker } from '@components/analytics/ThankYouTracker'
 
 export default function ThankYouPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <ThankYouTracker />
       <div className="max-w-lg">
         <span className="text-6xl">✓</span>
         <h1 className="mt-6 text-4xl font-bold">You're on the list.</h1>

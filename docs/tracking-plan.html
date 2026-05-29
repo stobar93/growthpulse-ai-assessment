@@ -1,0 +1,582 @@
+<!--
+  GrowthPulse Tracking Plan — single source of truth.
+  Any new event must be added BOTH to the implementation
+  AND to the EVENTS array in this file, in the same PR.
+  Open this file directly in a browser (no server required).
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GrowthPulse — Tracking Plan</title>
+    <style>
+      :root {
+        --bg: #fafaf9;
+        --panel: #ffffff;
+        --ink: #18181b;
+        --muted: #71717a;
+        --line: #e4e4e7;
+        --accent: #00a884;
+        --accent-soft: #d6f5ec;
+        --warn: #b45309;
+        --warn-soft: #fef3c7;
+        --code-bg: #f4f4f5;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+          Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 15px;
+        line-height: 1.55;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 32px 96px;
+      }
+      header.page {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 24px;
+        margin-bottom: 32px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: -0.01em;
+      }
+      h2 {
+        margin: 40px 0 12px;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        margin: 24px 0 8px;
+        font-size: 16px;
+      }
+      p { margin: 8px 0; }
+      .lede { color: var(--muted); max-width: 70ch; }
+      code, .mono {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+          Consolas, monospace;
+        font-size: 0.92em;
+        background: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin: 16px 0 8px;
+        flex-wrap: wrap;
+      }
+      button.copy {
+        appearance: none;
+        background: var(--ink);
+        color: #fff;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      button.copy:hover { background: #27272a; }
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .legend {
+        display: inline-flex;
+        gap: 14px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .pill.client { background: var(--accent-soft); color: #006a52; }
+      .pill.server { background: var(--warn-soft); color: var(--warn); }
+
+      /* Funnel */
+      .funnel {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .funnel .step {
+        flex: 1 1 0;
+        min-width: 120px;
+        border-radius: 8px;
+        padding: 12px 14px;
+        background: var(--code-bg);
+        font-size: 13px;
+        position: relative;
+      }
+      .funnel .step .n {
+        font-weight: 700;
+        font-size: 11px;
+        color: var(--accent);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .funnel .step .name {
+        margin-top: 4px;
+        font-weight: 600;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12.5px;
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 13.5px;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        background: #fafafa;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+      tr:last-child td { border-bottom: 0; }
+      td .mono { background: transparent; padding: 0; }
+
+      /* Event card */
+      .event {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin: 14px 0;
+        scroll-margin-top: 24px;
+      }
+      .event > header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      .event h3 {
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 15px;
+      }
+      .event .when {
+        color: var(--muted);
+        margin: 4px 0 12px;
+      }
+      .event .purpose {
+        margin: 8px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+        font-style: italic;
+      }
+      .event table { font-size: 12.5px; }
+      .event table th { background: #fcfcfc; }
+      a.anchor {
+        margin-left: 6px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 12px;
+        opacity: 0.6;
+      }
+      a.anchor:hover { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="page">
+        <h1>GrowthPulse — Tracking Plan</h1>
+        <p class="lede">
+          The conversion funnel for the lead-capture landing page, instrumented in PostHog.
+          This page is the source of truth. Implementation files and event payloads must match
+          what's documented here.
+        </p>
+        <div class="toolbar">
+          <button class="copy" id="copy-json">Copy events as JSON</button>
+          <span class="meta">
+            Last updated <span id="updated"></span>
+          </span>
+          <span class="legend">
+            <span><span class="pill client">Client</span> fires from the browser</span>
+            <span><span class="pill server">Server</span> fires from the Server Action</span>
+          </span>
+        </div>
+      </header>
+
+      <h2>Conversion funnel</h2>
+      <div class="funnel" id="funnel"></div>
+
+      <h2>Super-properties</h2>
+      <p class="lede">
+        Registered on the PostHog client at page load (and passed through on all server events).
+        Every event below carries these in addition to its own properties.
+      </p>
+      <table id="super-props-table">
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Source</th>
+            <th>Example</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h2>Events</h2>
+      <div id="events"></div>
+
+      <h2>PII handling</h2>
+      <p class="lede">
+        Name and email are <strong>never</strong> sent as event properties. They are set once
+        on the person via <code>posthog.identify()</code> + <code>$set</code> on
+        <code>lead_captured</code> (server-side, with <code>distinctId = visitor_id</code>).
+        Inputs for name and email carry the <code>data-ph-no-capture</code> attribute so PostHog
+        Session Replay masks them.
+      </p>
+      <p class="lede">
+        Categorical select fields (<code>company_size</code>, <code>marketing_team_size</code>)
+        are non-PII and are sent as event properties on
+        <code>form_field_completed</code> and <code>lead_captured</code>.
+      </p>
+
+      <h2>Naming conventions</h2>
+      <ul>
+        <li><code>snake_case</code>, lowercase, no namespace prefix.</li>
+        <li>Event names are past-tense verbs describing what the user did
+          (<code>section_viewed</code>, not <code>view_section</code>).</li>
+        <li>Property names are <code>noun</code> or <code>noun_state</code>
+          (<code>location</code>, <code>field</code>, <code>fields_completed_count</code>).</li>
+        <li>Section IDs match the component files (<code>hero</code>, <code>features</code>,
+          <code>social_proof</code>, <code>pricing</code>, <code>cta_form</code>).</li>
+      </ul>
+    </div>
+
+    <script>
+      // ---- DATA ------------------------------------------------------------
+      const FUNNEL = [
+        '$pageview',
+        'section_viewed',
+        'cta_clicked',
+        'form_started',
+        'form_field_completed',
+        'form_submitted',
+        'lead_captured',
+        'thank_you_viewed',
+      ];
+
+      const SUPER_PROPS = [
+        {
+          name: 'ab_variant',
+          type: 'string',
+          source: 'SSR via getHeroVariant() — registered by AnalyticsBootstrap',
+          example: '"control" | "variant-b"',
+          notes: 'Identifies the hero headline A/B test cohort.',
+        },
+        {
+          name: 'utm_source',
+          type: 'string?',
+          source: 'utm_data cookie (set by UTMCapture)',
+          example: '"google"',
+          notes: 'Only present if the visitor arrived with utm_source.',
+        },
+        {
+          name: 'utm_medium',
+          type: 'string?',
+          source: 'utm_data cookie',
+          example: '"cpc"',
+          notes: '',
+        },
+        {
+          name: 'utm_campaign',
+          type: 'string?',
+          source: 'utm_data cookie',
+          example: '"q2-launch"',
+          notes: '',
+        },
+        {
+          name: 'utm_term',
+          type: 'string?',
+          source: 'utm_data cookie',
+          example: '"marketing audit"',
+          notes: '',
+        },
+        {
+          name: 'utm_content',
+          type: 'string?',
+          source: 'utm_data cookie',
+          example: '"banner-a"',
+          notes: '',
+        },
+        {
+          name: '$current_url, $referrer',
+          type: 'string',
+          source: 'PostHog autocapture',
+          example: '—',
+          notes: 'Standard PostHog properties.',
+        },
+      ];
+
+      const EVENTS = [
+        {
+          name: '$pageview',
+          side: 'client',
+          fires_when: 'PostHog autocaptures on route load.',
+          purpose: 'Funnel entry. Also used to scope all session metrics.',
+          properties: [],
+        },
+        {
+          name: 'experiment_exposed',
+          side: 'client',
+          fires_when: 'Once per page load, after PostHog init, with the SSR variant.',
+          purpose: 'Confirms the visitor was bucketed into a variant — required for clean experiment analysis.',
+          properties: [
+            { name: 'flag_key', type: 'string', required: true, example: '"hero-headline"', notes: '' },
+            { name: 'variant', type: 'string', required: true, example: '"variant-b"', notes: 'Same value as the ab_variant super-property.' },
+          ],
+        },
+        {
+          name: 'section_viewed',
+          side: 'client',
+          fires_when: 'A landing section reaches 70% viewport intersection. Fires once per section per pageview.',
+          purpose: 'Measures content engagement and identifies where visitors drop off before reaching the form.',
+          properties: [
+            { name: 'section', type: 'enum', required: true, example: '"hero" | "features" | "social_proof" | "pricing" | "cta_form"', notes: 'Matches the section component file.' },
+            { name: 'position', type: 'number', required: true, example: '1..5', notes: 'Order on the page.' },
+          ],
+        },
+        {
+          name: 'cta_clicked',
+          side: 'client',
+          fires_when: 'Any conversion-pointing button is pressed.',
+          purpose: 'Identifies which CTAs convert to form interaction. Compare locations across variants.',
+          properties: [
+            { name: 'location', type: 'enum', required: true, example: '"hero_primary" | "hero_secondary" | "pricing_starter" | "pricing_growth" | "pricing_scale" | "final_submit"', notes: 'Where the click happened.' },
+            { name: 'cta_label', type: 'string', required: true, example: '"Get Your Free Diagnostic"', notes: 'Visible button text — useful for copy iteration.' },
+          ],
+        },
+        {
+          name: 'form_started',
+          side: 'client',
+          fires_when: 'First interaction with any form field (focus on input or open on select). Fires once per pageview.',
+          purpose: 'Top of the form sub-funnel. Combined with $pageview gives form-open rate.',
+          properties: [
+            { name: 'first_field', type: 'enum', required: true, example: '"name" | "email" | "company_size" | "marketing_team_size"', notes: 'Which field the user touched first.' },
+          ],
+        },
+        {
+          name: 'form_field_completed',
+          side: 'client',
+          fires_when: 'Field loses focus (input) or value changes (select) with a non-empty value. Once per field per pageview.',
+          purpose: 'Per-field drop-off analysis. Identify the field that breaks the form.',
+          properties: [
+            { name: 'field', type: 'enum', required: true, example: '"name" | "email" | "company_size" | "marketing_team_size"', notes: '' },
+            { name: 'value', type: 'string?', required: false, example: '"11-50"', notes: 'Only sent for the two non-PII selects. Omitted for name and email.' },
+          ],
+        },
+        {
+          name: 'form_validation_failed',
+          side: 'client',
+          fires_when: 'The Server Action returns a Zod validation error.',
+          purpose: 'Catches client-side mistakes (bad email, missing select) that block submission.',
+          properties: [
+            { name: 'field', type: 'string', required: true, example: '"email"', notes: 'Parsed from the server error string.' },
+            { name: 'message', type: 'string', required: true, example: '"Valid email required"', notes: '' },
+          ],
+        },
+        {
+          name: 'form_submitted',
+          side: 'client',
+          fires_when: 'User presses the form submit button (before the Server Action result is known).',
+          purpose: 'Intent-to-submit. Pairs with lead_captured to measure server-side success rate.',
+          properties: [
+            { name: 'fields_completed_count', type: 'number', required: true, example: '4', notes: 'How many fields were completed before submitting.' },
+          ],
+        },
+        {
+          name: 'lead_captured',
+          side: 'server',
+          fires_when: 'The Server Action successfully persists the lead (after Zod parse and LeadService.createLead).',
+          purpose: 'The conversion event. Use as the final step in all funnels.',
+          properties: [
+            { name: 'company_size', type: 'enum', required: true, example: '"11-50"', notes: '' },
+            { name: 'marketing_team_size', type: 'enum', required: true, example: '"3-5"', notes: '' },
+            { name: 'ab_variant', type: 'string', required: true, example: '"variant-b"', notes: 'Echoed on the event (server cannot rely on register).' },
+            { name: 'utm_source, utm_medium, ...', type: 'string?', required: false, example: '"google"', notes: 'Echoed from the utm_data cookie.' },
+          ],
+          side_effects: 'Also calls posthog.identify(visitor_id, $set: { email, name, company_size, marketing_team_size, ab_variant, utm_* }).',
+        },
+        {
+          name: 'form_abandoned',
+          side: 'client',
+          fires_when: 'document visibilitychange→hidden or pagehide after form_started, when form_submitted has not fired. Fires at most once.',
+          purpose: 'Quantifies abandonment and surfaces which field the user gave up on.',
+          properties: [
+            { name: 'last_field_touched', type: 'string?', required: false, example: '"company_size"', notes: 'The last field that received focus or a value change.' },
+            { name: 'fields_completed_count', type: 'number', required: true, example: '2', notes: '' },
+          ],
+        },
+        {
+          name: 'thank_you_viewed',
+          side: 'client',
+          fires_when: 'The /thank-you page mounts on the client.',
+          purpose: 'Verifies the redirect path completed. Use as a sanity check vs lead_captured.',
+          properties: [],
+        },
+      ];
+
+      // ---- RENDER ----------------------------------------------------------
+      // Strict no-innerHTML helper — every value is set via setAttribute
+      // or createTextNode so the data arrays cannot inject markup.
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === 'class') node.className = v;
+          else node.setAttribute(k, v);
+        }
+        for (const child of [].concat(children)) {
+          if (child == null) continue;
+          node.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
+        }
+        return node;
+      }
+
+      function renderFunnel() {
+        const root = document.getElementById('funnel');
+        FUNNEL.forEach((name, i) => {
+          root.appendChild(
+            el('div', { class: 'step' }, [
+              el('div', { class: 'n' }, `Step ${i + 1}`),
+              el('div', { class: 'name' }, name),
+            ])
+          );
+        });
+      }
+
+      function renderSuperProps() {
+        const tbody = document.querySelector('#super-props-table tbody');
+        for (const p of SUPER_PROPS) {
+          tbody.appendChild(
+            el('tr', {}, [
+              el('td', {}, el('code', {}, p.name)),
+              el('td', { class: 'mono' }, p.type),
+              el('td', {}, p.source),
+              el('td', {}, el('code', {}, p.example)),
+              el('td', {}, p.notes || '—'),
+            ])
+          );
+        }
+      }
+
+      function renderEvent(ev) {
+        const id = `event-${ev.name.replace(/[^a-z0-9_]/gi, '_')}`;
+        const card = el('section', { class: 'event', id });
+        const header = el('header', {}, [
+          el('h3', {}, ev.name),
+          el('span', { class: `pill ${ev.side}` }, ev.side),
+          el('a', { class: 'anchor', href: `#${id}` }, '#'),
+        ]);
+        card.appendChild(header);
+        card.appendChild(el('p', { class: 'when' }, ev.fires_when));
+
+        if (ev.properties.length === 0) {
+          card.appendChild(el('p', { class: 'meta' }, 'No custom properties (super-properties only).'));
+        } else {
+          const table = el('table');
+          const thead = el('thead', {}, el('tr', {}, [
+            el('th', {}, 'Name'),
+            el('th', {}, 'Type'),
+            el('th', {}, 'Required'),
+            el('th', {}, 'Example'),
+            el('th', {}, 'Notes'),
+          ]));
+          const tbody = el('tbody');
+          for (const p of ev.properties) {
+            tbody.appendChild(
+              el('tr', {}, [
+                el('td', {}, el('code', {}, p.name)),
+                el('td', { class: 'mono' }, p.type),
+                el('td', {}, p.required ? 'yes' : 'no'),
+                el('td', {}, el('code', {}, p.example)),
+                el('td', {}, p.notes || '—'),
+              ])
+            );
+          }
+          table.appendChild(thead);
+          table.appendChild(tbody);
+          card.appendChild(table);
+        }
+
+        if (ev.side_effects) {
+          card.appendChild(
+            el('p', { class: 'purpose' }, `Side effect: ${ev.side_effects}`)
+          );
+        }
+        card.appendChild(el('p', { class: 'purpose' }, ev.purpose));
+        return card;
+      }
+
+      function renderEvents() {
+        const root = document.getElementById('events');
+        for (const ev of EVENTS) root.appendChild(renderEvent(ev));
+      }
+
+      function setUpdated() {
+        const d = new Date();
+        document.getElementById('updated').textContent = d.toISOString().slice(0, 10);
+      }
+
+      document.getElementById('copy-json').addEventListener('click', async () => {
+        const payload = {
+          super_properties: SUPER_PROPS,
+          events: EVENTS,
+        };
+        const btn = document.getElementById('copy-json');
+        try {
+          await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+          const original = btn.textContent;
+          btn.textContent = 'Copied ✓';
+          setTimeout(() => (btn.textContent = original), 1400);
+        } catch {
+          btn.textContent = 'Copy failed — check console';
+          console.log(JSON.stringify(payload, null, 2));
+        }
+      });
+
+      renderFunnel();
+      renderSuperProps();
+      renderEvents();
+      setUpdated();
+    </script>
+  </body>
+</html>
