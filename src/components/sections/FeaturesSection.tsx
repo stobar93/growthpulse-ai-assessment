@@ -7,31 +7,31 @@ import { useSectionView } from '@lib/hooks/useSectionView'
 const features = [
   {
     icon: '⚡',
-    illustration: '/illustrations/integration.png',
+    illustration: '/illustrations/integration.webp',
     title: 'One-Click Stack Integration',
     description: 'Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.',
   },
   {
     icon: '📊',
-    illustration: '/illustrations/score.png',
+    illustration: '/illustrations/score.webp',
     title: '7-Dimension Growth Score',
     description: 'Proprietary scoring algorithm rates each growth dimension on a 0–100 scale with benchmarks against industry peers.',
   },
   {
     icon: '🤖',
-    illustration: '/illustrations/action-plan.png',
+    illustration: '/illustrations/action-plan.webp',
     title: 'AI-Generated Action Plan',
     description: 'Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.',
   },
   {
     icon: '📄',
-    illustration: '/illustrations/report.png',
+    illustration: '/illustrations/report.webp',
     title: 'Executive Summary Report',
     description: 'Auto-generates a board-ready PDF with key findings, visualized scores, and strategic recommendations.',
   },
   {
     icon: '📡',
-    illustration: '/illustrations/dashboard.png',
+    illustration: '/illustrations/dashboard.webp',
     title: 'Live Dashboard',
     description: 'Real-time monitoring of all 7 dimensions with alerts when performance dips below benchmarks.',
   },
